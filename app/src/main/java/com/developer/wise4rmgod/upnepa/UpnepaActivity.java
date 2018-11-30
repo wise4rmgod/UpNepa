@@ -1,6 +1,7 @@
 package com.developer.wise4rmgod.upnepa;
 
 import android.arch.lifecycle.Observer;
+import android.media.MediaPlayer;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,12 +54,16 @@ public Button buttonOn,buttonOff;
             @Override
             public void onClick(View v) {
                // WorkManager.getInstance().beginWith(oneTimeWorkRequest).enqueue();
-                WorkManager.getInstance().enqueue(periodicWorkRequest);
+                WorkManager.getInstance().enqueue(oneTimeWorkRequest);
+                Toast.makeText(getApplicationContext(),"Waiting for Nepa Light Signal",Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
         buttonOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+             //   WorkManager.getInstance().cancelWorkById(periodicWorkRequest.getId());
+                Toast.makeText(getApplicationContext(),"Stopped Nepa Light Signal",Toast.LENGTH_SHORT).show();
                 WorkManager.getInstance().cancelWorkById(workid);
             }
         });

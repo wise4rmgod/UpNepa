@@ -12,11 +12,10 @@
         android:layout_width="298dp"
         android:layout_height="293dp"
         android:layout_marginStart="43dp"
-        android:layout_marginLeft="43dp"
-        android:layout_marginTop="86dp"
+        android:layout_marginTop="52dp"
         android:layout_marginEnd="43dp"
-        android:layout_marginRight="43dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/bulbligh" />
