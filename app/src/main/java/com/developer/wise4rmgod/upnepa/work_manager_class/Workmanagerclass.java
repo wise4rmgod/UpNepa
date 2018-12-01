@@ -4,15 +4,11 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
-
 import com.developer.wise4rmgod.upnepa.R;
 import com.developer.wise4rmgod.upnepa.UpnepaActivity;
-
-import androidx.work.Data;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 

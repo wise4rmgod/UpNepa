@@ -1,8 +1,8 @@
 package com.developer.wise4rmgod.upnepa;
 
-import android.arch.lifecycle.Observer;
-import android.media.MediaPlayer;
-import android.support.annotation.Nullable;
+
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.developer.wise4rmgod.upnepa.work_manager_class.Workmanagerclass;
 
+import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +24,9 @@ import androidx.work.WorkManager;
 public class UpnepaActivity extends AppCompatActivity {
 public Button buttonOn,buttonOff;
 
+
+
+    @TargetApi(Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,14 +41,17 @@ public Button buttonOn,buttonOff;
                 .build();
 
         Constraints constraints = new Constraints.Builder()
+                .setRequiresDeviceIdle(true)
                 .setRequiresCharging(true)
                 .build();
-        final OneTimeWorkRequest oneTimeWorkRequest=new OneTimeWorkRequest.Builder(Workmanagerclass.class)
-                .setConstraints(constraints)
-                .setInputData(data)
-                .build();
-        final PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(Workmanagerclass.class,100,TimeUnit.MILLISECONDS)
 
+                 final  OneTimeWorkRequest oneTimeWorkRequest = new OneTimeWorkRequest.Builder(Workmanagerclass.class)
+                    .setConstraints(constraints)
+                    .setInputData(data)
+                    //.setInitialDelay(1,TimeUnit.MILLISECONDS)
+                    .build();
+
+        final PeriodicWorkRequest periodicWorkRequest = new PeriodicWorkRequest.Builder(Workmanagerclass.class,1,TimeUnit.MILLISECONDS)
                 .setConstraints(constraints)
                 .build();
 
@@ -53,8 +60,8 @@ public Button buttonOn,buttonOff;
         buttonOn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               // WorkManager.getInstance().beginWith(oneTimeWorkRequest).enqueue();
-                WorkManager.getInstance().enqueue(oneTimeWorkRequest);
+               // WorkManager.getInstance().enqueue(periodicWorkRequest);
+                WorkManager.getInstance().enqueue(oneTimeWorkRequest).getResult();
                 Toast.makeText(getApplicationContext(),"Waiting for Nepa Light Signal",Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -62,7 +69,7 @@ public Button buttonOn,buttonOff;
         buttonOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-             //   WorkManager.getInstance().cancelWorkById(periodicWorkRequest.getId());
+             //  WorkManager.getInstance().cancelWorkById(periodicWorkRequest.getId());
                 Toast.makeText(getApplicationContext(),"Stopped Nepa Light Signal",Toast.LENGTH_SHORT).show();
                 WorkManager.getInstance().cancelWorkById(workid);
             }
