@@ -9,15 +9,15 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import com.developer.wise4rmgod.upnepa.R;
 import com.developer.wise4rmgod.upnepa.UpnepaActivity;
+
+import androidx.work.Data;
 import androidx.work.Worker;
-import androidx.work.WorkerParameters;
 
 public class Workmanagerclass extends Worker {
     private int notificationzx=0;
-
-    public Workmanagerclass(@NonNull Context context, @NonNull WorkerParameters workerParams) {
-        super(context, workerParams);
-    }
+    public static final String EXTRA_TITLE = "title";
+    public static final String EXTRA_TEXT = "text";
+    public static final String EXTRA_OUTPUT_MESSAGE = "output_message";
 
     @NonNull
     @Override
@@ -26,6 +26,18 @@ public class Workmanagerclass extends Worker {
         String titledata = "Up Nepa";
         String messagedata = "Your Phone Is Charging";
 
+
+        String title = getInputData().getString(EXTRA_TITLE, "My Phone");
+        String text = getInputData().getString(EXTRA_TEXT, "its charging");
+
+        //sendNotification("Simple Work Manager", "I have been send by WorkManager!");
+
+
+        Data output = new Data.Builder()
+                .putString(EXTRA_OUTPUT_MESSAGE, "its charging!")
+                .build();
+
+        setOutputData(output);
         sendnotification(titledata,messagedata);
 
         return Result.SUCCESS;
@@ -33,8 +45,8 @@ public class Workmanagerclass extends Worker {
 
     public void sendnotification(String title,String message){
 
-        Intent intent=new Intent(getApplicationContext(),UpnepaActivity.class);
-                  getApplicationContext().startActivity(intent);
+      //  Intent intent=new Intent(getApplicationContext(),UpnepaActivity.class);
+              //    getApplicationContext().startActivity(intent);
         MediaPlayer mPlayer = MediaPlayer.create(getApplicationContext(), R.raw.upnepamp3);
                     mPlayer.start();
 
@@ -43,7 +55,8 @@ public class Workmanagerclass extends Worker {
         //If on Oreo then notification required a notification channel.
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel("default", "Default", NotificationManager.IMPORTANCE_DEFAULT);
-
+                channel.enableLights(true);
+                channel.shouldVibrate();
             notificationManager.createNotificationChannel(channel);
         }
 
@@ -56,4 +69,6 @@ public class Workmanagerclass extends Worker {
         notificationManager.notify(++notificationzx, notification.build());
 
         }
+
+
 }

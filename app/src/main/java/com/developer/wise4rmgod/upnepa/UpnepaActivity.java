@@ -2,7 +2,9 @@ package com.developer.wise4rmgod.upnepa;
 
 
 import android.annotation.TargetApi;
+import android.arch.lifecycle.Observer;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -20,13 +22,12 @@ import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.PeriodicWorkRequest;
 import androidx.work.WorkManager;
+import androidx.work.WorkStatus;
 
 public class UpnepaActivity extends AppCompatActivity {
 public Button buttonOn,buttonOff;
 
 
-
-    @TargetApi(Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,7 +42,6 @@ public Button buttonOn,buttonOff;
                 .build();
 
         Constraints constraints = new Constraints.Builder()
-                .setRequiresDeviceIdle(true)
                 .setRequiresCharging(true)
                 .build();
 
@@ -61,7 +61,7 @@ public Button buttonOn,buttonOff;
             @Override
             public void onClick(View v) {
                // WorkManager.getInstance().enqueue(periodicWorkRequest);
-                WorkManager.getInstance().enqueue(oneTimeWorkRequest).getResult();
+                WorkManager.getInstance().enqueue(oneTimeWorkRequest);
                 Toast.makeText(getApplicationContext(),"Waiting for Nepa Light Signal",Toast.LENGTH_SHORT).show();
                 finish();
             }
@@ -74,6 +74,30 @@ public Button buttonOn,buttonOff;
                 WorkManager.getInstance().cancelWorkById(workid);
             }
         });
+
+
+
+
+        WorkManager.getInstance().getStatusById(oneTimeWorkRequest.getId())
+                .observe(this, new Observer<WorkStatus>() {
+                    @Override
+                    public void onChanged(@Nullable WorkStatus workStatus) {
+                        if (workStatus != null) {
+                            //  mTextView.append("SimpleWorkRequest: " + workStatus.getState().name() + "\n");
+                        }
+
+                        if (workStatus != null && workStatus.getState().isFinished()) {
+                            String message = workStatus.getOutputData().getString(Workmanagerclass.EXTRA_OUTPUT_MESSAGE, "Default message");
+                           // mTextView.append("SimpleWorkRequest (Data): " + message);
+                            Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
+                        }
+
+                        else {
+                           // mTextView.append("No current avaliable");
+                        }
+                    }
+                });
+
 
 
     }
