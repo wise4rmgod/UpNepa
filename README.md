@@ -7,10 +7,10 @@ Material the XYZ Reader project
 
 Main Activity
 
-![Master Activity](https://res.cloudinary.com/wise4rmgod/image/upload/v1541878403/Screenshot_20181110-193600.png)
+![Master Activity](https://github.com/wise4rmgod/UpNepa/blob/master/Screenshot_20181201-171117.png)
 
 
 
 Detail Activity
 
-![Detail Activity](https://res.cloudinary.com/wise4rmgod/image/upload/v1541878394/Screenshot_20181110-193627.png)
+![Detail Activity](https://github.com/wise4rmgod/UpNepa/blob/master/Screenshot_20181201-164236.png)
