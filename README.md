@@ -3,7 +3,7 @@ This is an App am creating to help the good people of nigeria know when nepa giv
 
 *by Nwokocha Wisdom*
 
-Material the XYZ Reader project
+Up Nepa
 
 Main Activity
 
